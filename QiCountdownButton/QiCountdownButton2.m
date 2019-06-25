@@ -30,7 +30,7 @@
     
     if (!_timer) {
         __weak typeof(self) weakSelf = self;
-        _timer = [NSTimer timerWithTimeInterval:_timeInterval repeats:YES block:^(NSTimer *timer) {
+        _timer = [NSTimer timerWithTimeInterval:_timeInterval repeats:YES block:^(NSTimer * _Nonnull timer) {
             
             [weakSelf setTitle:[NSString stringWithFormat:@"%@s", @(MAX(--weakSelf.currentInteger, weakSelf.minInteger)).stringValue] forState:UIControlStateDisabled];
             
