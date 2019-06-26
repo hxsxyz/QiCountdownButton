@@ -12,9 +12,7 @@
 
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, assign) NSInteger currentInteger;
-@property (nonatomic, assign) NSInteger onBackgroundTime;
-@property (nonatomic, assign) NSInteger didEnterBackgroundTimestamp;
-@property (nonatomic, assign) NSInteger willEnterForegroundTimestamp;
+@property (nonatomic, assign) NSTimeInterval didEnterBackgroundTimestamp;
 
 @end
 
@@ -65,23 +63,22 @@
 - (void)applicationDidEnterBackground:(id)sender {
     NSLog(@"%s", __func__);
     
-    _didEnterBackgroundTimestamp = (NSInteger)[[NSDate date] timeIntervalSince1970];
+    _didEnterBackgroundTimestamp = [[NSDate date] timeIntervalSince1970];
 }
 
 - (void)applicationWillEnterForeground:(id)sender {
     NSLog(@"%s", __func__);
     
-    _willEnterForegroundTimestamp = (NSInteger)[[NSDate date] timeIntervalSince1970];
-    NSInteger onBackgroundSeconds = (_didEnterBackgroundTimestamp == 0)? 0: (_willEnterForegroundTimestamp - _didEnterBackgroundTimestamp);
+    NSTimeInterval willEnterForegroundTimestamp = [[NSDate date] timeIntervalSince1970];
     
+    NSInteger onBackgroundSeconds = floor((_didEnterBackgroundTimestamp == 0)? 0: (willEnterForegroundTimestamp - _didEnterBackgroundTimestamp));
     _currentInteger -= onBackgroundSeconds;
 }
 
 - (void)dealloc {
+    NSLog(@"%s", __func__);
     
     [self stopCountdown];
-    
-    NSLog(@"%s", __func__);
 }
 
 @end
