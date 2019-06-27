@@ -30,9 +30,6 @@
         __weak typeof(self) weakSelf = self;
         _timer = [NSTimer timerWithTimeInterval:_timeInterval repeats:YES block:^(NSTimer * _Nonnull timer) {
             [weakSelf setTitle:[NSString stringWithFormat:@"%@s", @(MAX(--weakSelf.currentInteger, weakSelf.minInteger)).stringValue] forState:UIControlStateDisabled];
-            
-            NSLog(@"%li, %li, %li", weakSelf.currentInteger, weakSelf.minInteger, (NSInteger)[UIApplication sharedApplication].backgroundTimeRemaining);
-            
             if (weakSelf.currentInteger <= weakSelf.minInteger) {
                 [weakSelf stopCountdown];
             }
@@ -62,8 +59,7 @@
     
     __weak typeof(self) weakSelf = self;
     _backgroundTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-        [[UIApplication sharedApplication] endBackgroundTask:weakSelf.backgroundTaskId];
-        weakSelf.backgroundTaskId = UIBackgroundTaskInvalid;
+        [weakSelf endBackgroundTask];
     }];
 }
 
